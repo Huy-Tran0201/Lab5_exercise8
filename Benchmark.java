@@ -1,9 +1,10 @@
 /**
- * So sánh thời gian lấy đủ 52 lá bài giữa EAGER và LAZY, dùng System.currentTimeMillis().
+ * So sánh thời gian lấy đủ 52 lá bài giữa EAGER và LAZY, dùng
+ * System.currentTimeMillis().
  *
  * Cách dùng:
- *   java Benchmark single eager|lazy   -> 1 lần đo trong JVM mới (gồm cả khởi tạo)
- *   java Benchmark repeat [N]          -> lặp N lần (mặc định 200000) để khuếch đại
+ * java Benchmark single eager|lazy -> 1 lần đo trong JVM mới (gồm cả khởi tạo)
+ * java Benchmark repeat [N] -> lặp N lần (mặc định 200000) để khuếch đại
  */
 public class Benchmark {
 
@@ -53,10 +54,10 @@ public class Benchmark {
         boolean map = which.equals("map");
         long t0 = System.currentTimeMillis();
         long n0 = System.nanoTime();
-        int a = eager ? obtainAllEager() : map ? obtainAllMap() : obtainAllLazy();   // lần 1
+        int a = eager ? obtainAllEager() : map ? obtainAllMap() : obtainAllLazy(); // lần 1
         long n1 = System.nanoTime();
         long t1 = System.currentTimeMillis();
-        int b = eager ? obtainAllEager() : map ? obtainAllMap() : obtainAllLazy();   // lần 2
+        int b = eager ? obtainAllEager() : map ? obtainAllMap() : obtainAllLazy(); // lần 2
         long n2 = System.nanoTime();
         System.out.println(which + ";" + (t1 - t0) + ";" + (n1 - n0) + ";" + (n2 - n1) + ";" + (a + b));
     }
@@ -79,14 +80,14 @@ public class Benchmark {
         // (1) Lấy 52 lá từ trạng thái "chưa có gì"
         long t0 = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            EagerCards.rebuild();          // eager: tạo sẵn 52 lá
+            EagerCards.rebuild(); // eager: tạo sẵn 52 lá
             sink += obtainAllEager();
         }
         long eagerMs = System.currentTimeMillis() - t0;
 
         t0 = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            Card.clearCache();             // lazy: kho trống, tạo dần khi lấy
+            Card.clearCache(); // lazy: kho trống, tạo dần khi lấy
             sink += obtainAllLazy();
         }
         long lazyMs = System.currentTimeMillis() - t0;
@@ -128,10 +129,9 @@ public class Benchmark {
         mapHitMs = System.currentTimeMillis() - t0;
         System.out.println("Map lazy: tu trong = " + mapMs + " ms, da co san = " + mapHitMs + " ms");
 
-        System.out.println("N = " + n + " lần lấy đủ 52 lá");
-        System.out.println("(1) Từ trạng thái trống: eager = " + eagerMs + " ms, lazy = " + lazyMs
-                + " ms (lazy gồm clearCache " + clearMs + " ms)");
-        System.out.println("(2) Khi đã có sẵn:       eager = " + eagerHitMs + " ms, lazy = " + lazyHitMs + " ms");
-        System.out.println("checksum " + sink);
+        System.out.println("N = " + n + " lan lay du 52 la");
+        System.out.println("(1) Tu trang thai trong: eager = " + eagerMs + " ms, lazy = " + lazyMs
+                + " ms (lazy gom clearCache " + clearMs + " ms)");
+        System.out.println("(2) Khi da co san:       eager = " + eagerHitMs + " ms, lazy = " + lazyHitMs + " ms");
     }
 }
